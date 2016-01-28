@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logspout
+  labels:
+    app: logspout
+spec:
+  containers:
+  - name: logspout
+    image: gliderlabs/logspout
+    command: [ "/bin/logspout"]
+    args: ["syslog://$(LOGSTASH_SERVICE_HOST):$(LOGSTASH_SERVICE_PORT_TCP)" ]
+    volumeMounts:
+      - name: docker
+        mountPath: /tmp/docker.sock
+  volumes:
+  - name: docker
+    hostPath:
+       path: /var/run/docker.sock
+  - emptyDir:
+      medium: ""
+    name: "storage"
