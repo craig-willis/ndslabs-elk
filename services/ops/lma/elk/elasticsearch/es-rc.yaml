@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: es-rc
+  name: elasticsearch-rc
   labels:
     component: elasticsearch
 spec:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - image: elasticsearch:2.1
-        name: es-rc
+        name: elasticsearch-rc
         resources:
           # keep request = limit to keep this container in guaranteed class
           limits:
@@ -31,7 +31,16 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: es-persistent-storage
-          mountPath: /data
+          mountPath: /usr/share/elasticsearch/data
+#        securityContext:
+#          privileged: true
       volumes:
+#      - name: es-persistent-storage
+#        emptyDir: {}
+#      - name: es-persistent-storage
+#        persistentVolumeClaim:
+#          claimName: elasticsearch-nfs
       - name: es-persistent-storage
-        emptyDir: {}
+        nfs:
+          server: 172.17.42.1
+          path: "/data/elasticsearch"

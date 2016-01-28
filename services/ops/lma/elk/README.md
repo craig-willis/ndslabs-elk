@@ -65,4 +65,37 @@ Start logspout:
 kubectl create -f logspout/logspout-pod.yaml
 ```
 
-As above, open a browser to http://<host>:5601, tunneling if necessary
+Start nginx for grins:
+```
+kubectl create -f kubernetes-nginx-example/nginx-pod.yaml 
+curl `kubectl get pod nginx -o go-template="{{.status.podIP}}"`
+kubectl get services
+```
+As above, open a browser to http://<kibana host>:5601, tunneling if necessary.
+
+Delete everything:
+```
+kubectl delete service elasticsearch
+kubectl delete service kibana
+kubectl delete service logstash
+kubectl delete rc elasticsearch-rc
+kubectl delete rc kibana-rc
+kubectl delete rc logstash-rc
+kubectl delete pod logspout/
+kubectl delete pod logspout
+kubectl delete pod ngin
+kubectl delete pod nginx
+```
+
+### Persistent storage
+One open issue is how we will manage persistent storage.  For now, the ElasticSearch resource controller uses an NFS volume:
+```
+      - name: es-persistent-storage
+        nfs:
+          server: 172.17.42.1
+          path: "/data/elasticsearch"
+```
+
+This is a temporary solution.
+
+
