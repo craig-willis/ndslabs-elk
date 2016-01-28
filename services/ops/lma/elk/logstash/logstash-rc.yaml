@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: logstash-controller
+spec:
+  replicas: 1
+  selector:
+    app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: logstash
+        command: [ "logstash", "-e"]
+        args: ["output { elasticsearch { hosts => \"$(ELASTICSEARCH_SERVICE_HOST):$(ELASTICSEARCH_SERVICE_PORT_HTTP)\" } } input { tcp { port => 5000 type => syslog } }"]
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+        - containerPort: 5000
+          protocol: UDP
+      volumes:
+      - emptyDir:
+          medium: ""
+        name: "storage"
