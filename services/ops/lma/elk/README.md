@@ -32,17 +32,22 @@ docker run --name nds-nginx -p 80:80 -d nginx
 curl `docker inspect  -f '{{.NetworkSettings.IPAddress}}' nds-nginx`
 ```
 
-Open Kibana in a browser (http://<host>:5601).  If the server is not in the open security group, tunnel via ssh:
+Open Kibana in a browser (http://<host>:5601). 
 ```
 docker inspect  -f '{{.NetworkSettings.IPAddress}}' nds-kibana
 ```
+
+If the server is not in the open security group, tunnel via ssh:
+```
 ssh -L 5601:<kibana container ip>:5601 -i pem core@<host>
 ```
+
 Now goto http://localhost:5601
 
 ### Kubernetes
 
 Start elasticsearch resource controller and service. Remember to wait for the resource controller before starting the service:
+
 ```
 kubectl create -f elasticsearch/es-rc.yaml
 kubectl create -f elasticsearch/es-svc.yaml
@@ -61,6 +66,7 @@ kubectl create -f kibana/kibana-svc.yaml
 ```
 
 Start logspout:
+
 ```
 kubectl create -f logspout/logspout-pod.yaml
 ```
