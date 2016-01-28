@@ -6,9 +6,7 @@ elasticsearch:
     - "9300:9300"
 logstash:
   image: logstash:latest
-  command: logstash -f /nds/src/services/ops/lma/elk/logstash/logstash.conf
-  volumes_from:
-    - NDSSRC
+  command: logstash -e 'output { elasticsearch { hosts => \"elasticsaerch\" } } input { tcp { port => 5000 type => syslog } udp { port => 5000 type => syslog } }'
   ports:
     - "5000:5000"
   links:
