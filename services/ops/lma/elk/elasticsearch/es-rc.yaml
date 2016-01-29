@@ -40,7 +40,10 @@ spec:
 #      - name: es-persistent-storage
 #        persistentVolumeClaim:
 #          claimName: elasticsearch-nfs
+#      - name: es-persistent-storage
+#        nfs:
+#          server: 172.17.42.1
+#          path: "/data/elasticsearch"
       - name: es-persistent-storage
-        nfs:
-          server: 172.17.42.1
-          path: "/data/elasticsearch"
+        hostPath:
+           path: /data/elasticsearch

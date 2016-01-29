@@ -8,5 +8,8 @@ spec:
   ports:
   - port: 5601
     protocol: TCP
+    targetPort: 5601
+    nodePort: 30000
   selector:
     app: kibana
+  type: NodePort
