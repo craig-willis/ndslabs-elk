@@ -17,6 +17,3 @@ spec:
   - name: docker
     hostPath:
        path: /var/run/docker.sock
-  - emptyDir:
-      medium: ""
-    name: "storage"

@@ -16,12 +16,6 @@ spec:
       containers:
       - image: elasticsearch:2.1
         name: elasticsearch-rc
-        resources:
-          # keep request = limit to keep this container in guaranteed class
-          limits:
-            cpu: 100m
-          requests:
-            cpu: 100m
         ports:
         - containerPort: 9200
           name: db
@@ -32,18 +26,7 @@ spec:
         volumeMounts:
         - name: es-persistent-storage
           mountPath: /usr/share/elasticsearch/data
-#        securityContext:
-#          privileged: true
       volumes:
-#      - name: es-persistent-storage
-#        emptyDir: {}
-#      - name: es-persistent-storage
-#        persistentVolumeClaim:
-#          claimName: elasticsearch-nfs
-#      - name: es-persistent-storage
-#        nfs:
-#          server: 172.17.42.1
-#          path: "/data/elasticsearch"
       - name: es-persistent-storage
         hostPath:
            path: /data/elasticsearch

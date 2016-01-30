@@ -6,6 +6,10 @@ This is a basic Kubernetes-based implementation of the [Elasticsearch, LogStash,
 
 Start elasticsearch resource controller and service. Remember to wait for the resource controller before starting the service:
 
+To start the ELK stack, simply run ./start-elk.sh
+
+#### Starting things manually.
+
 ```
 kubectl create -f elasticsearch/es-rc.yaml
 kubectl create -f elasticsearch/es-svc.yaml
@@ -49,19 +53,6 @@ kubectl delete pod logspout
 kubectl delete pod nginx
 ```
 
-### Persistent storage
-One open issue is how we will manage persistent storage.  For now, the ElasticSearch resource controller uses an NFS volume:
-```
-      - name: es-persistent-storage
-        nfs:
-          server: 172.17.42.1
-          path: "/data/elasticsearch"
-```
-
-This is a temporary solution.
-
-
-
 
 ### Basic docker
 To get started, here are a set of basic docker commands to start and test the ELK+logspout containers.
@@ -103,6 +94,4 @@ ssh -L 5601:<kibana container ip>:5601 -i pem core@<host>
 ```
 
 Now goto http://localhost:5601
-
-
 
